@@ -14,6 +14,7 @@ public class MorseListener : MonoBehaviour
     private float beatLength;
 
     private bool buttonHeld = false;
+    private bool morseStarted = false;
     private float duration = 0;
 
     private StringBuilder morse = new StringBuilder();
@@ -22,8 +23,8 @@ public class MorseListener : MonoBehaviour
     public const string DOT = ".";
     public const string DASH = "-";
     public const string SGAP = " "; // gap between parts of a char
-    public const string MGAP = "   "; // gap between letters
-    public const string LGAP = "       "; // gap between words
+    public const string MGAP = "&"; // gap between letters
+    public const string LGAP = "_"; // gap between words
 
     // Events
     public delegate void AddMorseLetter();
@@ -32,13 +33,22 @@ public class MorseListener : MonoBehaviour
     /// </summary>
     public static event AddMorseLetter OnAddMorseLetter;
 
+    private void Awake()
+    {
+        beatLength = 60 / bpm;
+    }
+
     // Update is called once per frame
     void Update()
     {
         beatLength = 60 / bpm; // one morse code time unit in seconds; set this here so we can dynamically update the bpm
 
-        bool button = Input.GetButton("MorseButton");
+        ProcessButton();
+    }
 
+    void ProcessButton()
+    {
+        bool button = Input.GetButton("MorseButton");
 
         if (button == buttonHeld) // no change in input, just add duration and move on
         {
@@ -55,6 +65,7 @@ public class MorseListener : MonoBehaviour
             {
                 morse.Append(DOT);
             }
+            duration = 0;
         }
         else if (button) // button was not down but now is, parse space
         {
@@ -70,8 +81,12 @@ public class MorseListener : MonoBehaviour
             {
                 morse.Append(SGAP);
             }
+            duration = 0;
         }
 
+        buttonHeld = button;
+
+        print(GetMorse());
         if (OnAddMorseLetter != null)
         {
             OnAddMorseLetter();
