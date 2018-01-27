@@ -24,6 +24,7 @@ public class MorseListenerTest : MonoBehaviour {
 
     void Letter()
     {
-        print(morseListener.GetMorse());
+        string morse = morseListener.GetMorse();
+        Debug.Log(morse);
     }
 }
