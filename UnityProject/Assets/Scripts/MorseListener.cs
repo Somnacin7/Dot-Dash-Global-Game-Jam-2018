@@ -9,7 +9,7 @@ public class MorseListener : MonoBehaviour
     /// <summary>
     /// The tempo of the morse code. One beat is one  unit of time.
     /// </summary>
-    [Range(60, 360)] public int bpm = 60;
+    [Range(60, 500)] public int bpm = 60;
 
     private float beatLength;
 
@@ -33,15 +33,21 @@ public class MorseListener : MonoBehaviour
     /// </summary>
     public static event AddMorseLetter OnAddMorseLetter;
 
+    public delegate void AddMorseWord();
+    /// <summary>
+    /// Called whenever a piece of a char is added 
+    /// </summary>
+    public static event AddMorseWord OnAddMorseWord;
+
     private void Awake()
     {
-        beatLength = 60 / bpm;
+        beatLength = 60f / bpm;
     }
 
     // Update is called once per frame
     void Update()
     {
-        beatLength = 60 / bpm; // one morse code time unit in seconds; set this here so we can dynamically update the bpm
+        beatLength = 60f / bpm; // one morse code time unit in seconds; set this here so we can dynamically update the bpm
 
         ProcessButton();
     }
@@ -72,10 +78,18 @@ public class MorseListener : MonoBehaviour
             if (duration >= 7 * beatLength) // space between words
             {
                 morse.Append(LGAP);
+                if (OnAddMorseWord != null)
+                {
+                    OnAddMorseWord();
+                }
             }
             else if (duration >= 3 * beatLength) // space between letters
             {
                 morse.Append(MGAP);
+                if (OnAddMorseLetter != null)
+                {
+                    OnAddMorseLetter();
+                }
             }
             else // space between parts of a letters
             {
@@ -87,10 +101,8 @@ public class MorseListener : MonoBehaviour
         buttonHeld = button;
 
         print(GetMorse());
-        if (OnAddMorseLetter != null)
-        {
-            OnAddMorseLetter();
-        }
+
+        
     }
 
     public string GetMorse()
