@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class MorseListener : MonoBehaviour
@@ -20,12 +21,39 @@ public class MorseListener : MonoBehaviour
     private StringBuilder morse = new StringBuilder();
 
     // Morse parts
+    public Dictionary<string, string> morseAlphabet = new Dictionary<string, string>()
+    {
+        {".-","A"},
+        {"-...","B"},
+        {"-.- .","C"},
+        {"-..","D"},
+        {".","E"},
+        {"..-.","F"},
+        {"--.","G"},
+        {"....","H"},
+        {"..","I"},
+        {".---","J"},
+        {"-.-","K"},
+        {".-..","L"},
+        {"--","M"},
+        {"-.","N"},
+        {"---","O"},
+        {".--.","P"},
+        {"--.-","Q"},
+        {".-.","R"},
+        {"...","S"},
+        {"-","T"},
+        {"..--","U"},
+        {"...-","V"},
+        {".--","W"},
+        {"-..-","X"},
+        {"-.--","Y"},
+        {"--..","Z"}
+    };
     public const string DOT = ".";
     public const string DASH = "-";
-    public const string SGAP = " "; // gap between parts of a char
     public const string MGAP = "&"; // gap between letters
     public const string LGAP = "_"; // gap between words
-
     // Events
     public delegate void AddMorseLetter();
     /// <summary>
@@ -110,6 +138,28 @@ public class MorseListener : MonoBehaviour
     public string GetPlainMorse()
     {
         return morse.Replace("&", "   ").Replace("_", "       ").ToString();
+    }
+
+    public string MorseToEnglish(string morse)
+    {
+        string ret;
+        StringBuilder english = new StringBuilder();
+        List<string> words = new List<string>();
+
+        words.AddRange(morse.Split('_'));
+
+        foreach (string word in words)
+        {
+            List<string> letters = new List<string>();
+            letters.AddRange(word.Split('&'));
+            foreach (string var in letters)
+            {
+                english.Append(morseAlphabet[var]);
+            }
+            english.Append(' ');
+        }
+        ret = english.ToString();
+        return ret;
     }
 }
 
