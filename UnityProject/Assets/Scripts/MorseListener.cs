@@ -20,38 +20,37 @@ public class MorseListener : MonoBehaviour
     private StringBuilder morse = new StringBuilder();
 
     // Morse parts
-    public Dictionary<string, char> morseAlphabet = new Dictionary<string, char>()
+    public Dictionary<string, string> morseAlphabet = new Dictionary<string, string>()
     {
-        {". -",'A'},
-        {"- . . .",'B'},
-        {"- . - .",'C'},
-        {"- . .",'D'},
-        {".",'E'},
-        {". . - .",'F'},
-        {"- - .",'G'},
-        {". . . .",'H'},
-        {". .",'I'},
-        {". - - -",'J'},
-        {"- . -",'K'},
-        {". - . .",'L'},
-        {"- -",'M'},
-        {"- .",'N'},
-        {"- - -",'O'},
-        {". - - .",'P'},
-        {"- - . -",'Q'},
-        {". - .",'R'},
-        {". . .",'S'},
-        {"-",'T'},
-        {". . - -",'U'},
-        {". . . -",'V'},
-        {". - -",'W'},
-        {"- . . -",'X'},
-        {"- . - -",'Y'},
-        {"- - . .",'Z'}
+        {".-","A"},
+        {"-...","B"},
+        {"-.- .","C"},
+        {"-..","D"},
+        {".","E"},
+        {"..-.","F"},
+        {"--.","G"},
+        {"....","H"},
+        {"..","I"},
+        {".---","J"},
+        {"-.-","K"},
+        {".-..","L"},
+        {"--","M"},
+        {"-.","N"},
+        {"---","O"},
+        {".--.","P"},
+        {"--.-","Q"},
+        {".-.","R"},
+        {"...","S"},
+        {"-","T"},
+        {"..--","U"},
+        {"...-","V"},
+        {".--","W"},
+        {"-..-","X"},
+        {"-.--","Y"},
+        {"--..","Z"}
     };
     public const string DOT = ".";
     public const string DASH = "-";
-    public const string SGAP = " "; // gap between parts of a char
     public const string MGAP = "&"; // gap between letters
     public const string LGAP = "_"; // gap between words
     // Events
@@ -95,10 +94,6 @@ public class MorseListener : MonoBehaviour
             {
                 morse.Append(MGAP);
             }
-            else // space between parts of a letters
-            {
-                morse.Append(SGAP);
-            }
         }
 
         if (OnAddMorseLetter != null)
@@ -116,7 +111,7 @@ public class MorseListener : MonoBehaviour
     public string MorseToEnglish(string morse)
     {
         string ret;
-        List<char> english = new List<char>();
+        StringBuilder english = new StringBuilder();
         List<string> words = new List<string>();
 
         words.AddRange(morse.Split('_'));
@@ -127,9 +122,9 @@ public class MorseListener : MonoBehaviour
             letters.AddRange(word.Split('&'));
             foreach (string var in letters)
             {
-                english.Add(morseAlphabet[var]);
+                english.Append(morseAlphabet[var]);
             }
-            english.Add(' ');
+            english.Append(' ');
         }
 
         ret = english.ToString();
