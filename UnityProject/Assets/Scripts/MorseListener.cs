@@ -92,10 +92,6 @@ public class MorseListener : MonoBehaviour
                     OnAddMorseLetter();
                 }
             }
-            else // space between parts of a letters
-            {
-                morse.Append(SGAP);
-            }
             duration = 0;
         }
 
