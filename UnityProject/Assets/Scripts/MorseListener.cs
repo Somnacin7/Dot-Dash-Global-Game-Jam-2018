@@ -86,7 +86,10 @@ public class MorseListener : MonoBehaviour
 
         if (button == buttonHeld) // no change in input, just add duration and move on
         {
-            duration += Time.deltaTime;
+            if (morseStarted)
+            {
+                duration += Time.deltaTime;
+            }
             return;
         }
         else if (!button) // button was down but now is not, parse dot/dash
