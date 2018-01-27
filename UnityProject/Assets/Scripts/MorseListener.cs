@@ -72,8 +72,9 @@ public class MorseListener : MonoBehaviour
                 morse.Append(DOT);
             }
             duration = 0;
+            morseStarted = true;
         }
-        else if (button) // button was not down but now is, parse space
+        else if (button && morseStarted) // button was not down but now is, parse space
         {
             if (duration >= 7 * beatLength) // space between words
             {
@@ -100,7 +101,7 @@ public class MorseListener : MonoBehaviour
 
         buttonHeld = button;
 
-        print(GetMorse());
+        print(GetPlainMorse());
 
         
     }
@@ -108,6 +109,11 @@ public class MorseListener : MonoBehaviour
     public string GetMorse()
     {
         return morse.ToString();
+    }
+
+    public string GetPlainMorse()
+    {
+        return morse.Replace("&", "   ").Replace("_", "       ").ToString();
     }
 }
 
