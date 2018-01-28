@@ -142,9 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef7a598457d15d34fa1c991716eca2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 60
-  audioSource: {fileID: 715438317}
-  tickClip: {fileID: 8300000, guid: 1de3d07396d4b6d4281e4efde90c0a3b, type: 3}
+  bpm: 500
 --- !u!4 &715438315
 Transform:
   m_ObjectHideFlags: 0

@@ -53,6 +53,7 @@ public class MorseListener : MonoBehaviour
     public const string DOT = ".";
     public const string DASH = "-";
 <<<<<<< HEAD
+<<<<<<< HEAD
     public const string MGAP = "&"; // gap between letters
     public const string LGAP = "_"; // gap between words
 =======
@@ -61,6 +62,10 @@ public class MorseListener : MonoBehaviour
     public const string LGAP = "_"; // gap between words
 
 >>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
+=======
+    public const string MGAP = "&"; // gap between letters
+    public const string LGAP = "_"; // gap between words
+>>>>>>> somn
     // Events
     public delegate void AddMorseLetter();
     /// <summary>
@@ -93,7 +98,10 @@ public class MorseListener : MonoBehaviour
 
         if (button == buttonHeld) // no change in input, just add duration and move on
         {
-            duration += Time.deltaTime;
+            if (morseStarted)
+            {
+                duration += Time.deltaTime;
+            }
             return;
         }
         else if (!button) // button was down but now is not, parse dot/dash
@@ -128,6 +136,7 @@ public class MorseListener : MonoBehaviour
                 }
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             else // space between parts of a letters
             {
@@ -135,6 +144,9 @@ public class MorseListener : MonoBehaviour
             }
             duration = 0;
 >>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
+=======
+            duration = 0;
+>>>>>>> somn
         }
 
         buttonHeld = button;
@@ -150,6 +162,13 @@ public class MorseListener : MonoBehaviour
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    public string GetPlainMorse()
+    {
+        return morse.Replace("&", "   ").Replace("_", "       ").ToString();
+    }
+>>>>>>> somn
 
     public string MorseToEnglish(string morse)
     {
@@ -169,15 +188,17 @@ public class MorseListener : MonoBehaviour
             }
             english.Append(' ');
         }
-
         ret = english.ToString();
         return ret;
+<<<<<<< HEAD
 
 =======
     public string GetPlainMorse()
     {
         return morse.Replace("&", "   ").Replace("_", "       ").ToString();
 >>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
+=======
+>>>>>>> somn
     }
 }
 
