@@ -11,6 +11,8 @@ public class MorseListener : MonoBehaviour
     /// The tempo of the morse code. One beat is one  unit of time.
     /// </summary>
     [Range(60, 500)] public int bpm = 60;
+    [Range(0.5f, 10)] public float mgapMultiplier = 1f;
+    [Range(0.5f, 10)] public float lgapMultiplier = 1f;
 
     private float beatLength;
 
@@ -57,19 +59,30 @@ public class MorseListener : MonoBehaviour
     // Events
     public delegate void AddMorseLetter();
     /// <summary>
-    /// Called whenever a piece of a char is added 
+    /// Called whenever an entire letter is added 
     /// </summary>
     public static event AddMorseLetter OnAddMorseLetter;
 
     public delegate void AddMorseWord();
     /// <summary>
-    /// Called whenever a piece of a char is added 
+    /// Called whenever a word is added
     /// </summary>
     public static event AddMorseWord OnAddMorseWord;
+
+    public delegate void LetterDone();
+    /// <summary>
+    /// Called whenever a new letter is ready to be typed
+    /// </summary>
+    public static event LetterDone OnLetterDone;
 
     private void Awake()
     {
         beatLength = 60f / bpm;
+
+        if (3 * beatLength * mgapMultiplier >= 7 * beatLength * lgapMultiplier)
+        {
+            throw new System.Exception("MGAP MUST BE SMALLER THAN LGAP");
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +102,25 @@ public class MorseListener : MonoBehaviour
             if (morseStarted)
             {
                 duration += Time.deltaTime;
+
+                
+                if (!button && duration >= 7 * beatLength * lgapMultiplier)
+                {
+                    morse.Append(LGAP);
+                    if (OnAddMorseWord != null)
+                    {
+                        OnAddMorseWord();
+                    }
+                    duration = 0;
+                    morseStarted = false;
+                }
+                else if (!button && duration >= 3 * beatLength * mgapMultiplier)
+                {
+                    if (OnLetterDone != null)
+                    {
+                        OnLetterDone();
+                    }
+                }
             }
             return;
         }
@@ -105,9 +137,9 @@ public class MorseListener : MonoBehaviour
             duration = 0;
             morseStarted = true;
         }
-        else if (button && morseStarted) // button was not down but now is, parse space
+        else if (button) // button was not down but now is, parse space
         {
-            if (duration >= 7 * beatLength) // space between words
+            if (duration >= 7 * beatLength * lgapMultiplier && morseStarted) // space between words
             {
                 morse.Append(LGAP);
                 if (OnAddMorseWord != null)
@@ -115,7 +147,7 @@ public class MorseListener : MonoBehaviour
                     OnAddMorseWord();
                 }
             }
-            else if (duration >= 3 * beatLength) // space between letters
+            else if (duration >= 3 * beatLength * mgapMultiplier && morseStarted) // space between letters
             {
                 morse.Append(MGAP);
                 if (OnAddMorseLetter != null)
@@ -124,13 +156,12 @@ public class MorseListener : MonoBehaviour
                 }
             }
             duration = 0;
+            morseStarted = true;
         }
 
+        print(morse);
         buttonHeld = button;
 
-        print(GetPlainMorse());
-
-        
     }
 
     public string GetMorse()
@@ -155,14 +186,43 @@ public class MorseListener : MonoBehaviour
         {
             List<string> letters = new List<string>();
             letters.AddRange(word.Split('&'));
+            letters.RemoveAll(s => string.IsNullOrEmpty(s));
             foreach (string var in letters)
             {
-                english.Append(morseAlphabet[var]);
+                if (morseAlphabet.ContainsKey(var))
+                {
+                    english.Append(morseAlphabet[var]);
+                }
             }
             english.Append(' ');
         }
         ret = english.ToString();
         return ret;
     }
+
+    public string Morse2English(string morse)
+    {
+        StringBuilder english = new StringBuilder();
+        var morseWords = new List<string>(morse.Split('_'));
+        morseWords.RemoveAll(s => string.IsNullOrEmpty(s));
+
+        foreach (var word in morseWords)
+        {
+            var morseLetters = new List<string>(word.Split('&'));
+            morseLetters.RemoveAll(s => string.IsNullOrEmpty(s));
+
+            foreach (var letter in morseLetters)
+            {
+                if (morseAlphabet.ContainsKey(letter))
+                {
+                    english.Append(morseAlphabet[letter]);
+                }
+            }
+            english.Append(" ");
+        }
+
+        return english.ToString();
+    }
+
 }
 
