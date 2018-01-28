@@ -76,6 +76,8 @@ public class MorseListener : MonoBehaviour
     /// </summary>
     public static event LetterDone OnLetterDone;
 
+	public HandMover handMover;
+
     private void Awake()
     {
         beatLength = 60f / bpm;
@@ -137,6 +139,8 @@ public class MorseListener : MonoBehaviour
             }
             duration = 0;
             morseStarted = true;
+
+			handMover.stopLeftHand ();
         }
         else if (button) // button was not down but now is, parse space
         {
@@ -158,6 +162,8 @@ public class MorseListener : MonoBehaviour
             }
             duration = 0;
             morseStarted = true;
+
+			handMover.moveLeftHand ();
         }
 
         print(morse);
