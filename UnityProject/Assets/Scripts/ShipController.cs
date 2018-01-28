@@ -15,6 +15,11 @@ public class ShipController : MonoBehaviour {
 
     public Text text;
 
+    public AudioClip gameOverSound;
+    public AudioClip winSound;
+
+    private AudioSource audioSource;
+
     private SplineWalker splineWalker;
     private bool running = false;
 
@@ -26,6 +31,7 @@ public class ShipController : MonoBehaviour {
 
     void Awake () {
         splineWalker = GetComponent<SplineWalker>();
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -81,6 +87,7 @@ public class ShipController : MonoBehaviour {
     void ResetSpline()
     {
         running = false;
+        text.text = ">_";
     }
 
     private void OnEnable()
@@ -125,12 +132,14 @@ public class ShipController : MonoBehaviour {
             morseListener.enabled = false;
             text.text = "ERR: CRASH";
             isDead = true;
+            audioSource.PlayOneShot(gameOverSound);
         }
         else if (go.tag == "finish")
         {
             morseListener.enabled = false;
             text.text = "YOU WIN!";
             isDead = true;
+            audioSource.PlayOneShot(winSound);
         }
     }
 
