@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Lost in Transmission 1.unity
+    path: Assets/Scenes/UIscene.unity
+    guid: b5dfc11f7acfbe34ea2394cd793b1a76
+  - enabled: 1
+    path: Assets/Maze.unity
     guid: 565157c29b726374c81e5b5c8c2801a7
