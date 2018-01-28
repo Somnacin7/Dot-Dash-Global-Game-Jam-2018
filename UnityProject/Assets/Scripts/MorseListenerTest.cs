@@ -46,5 +46,9 @@ public class MorseListenerTest : MonoBehaviour {
         {
             text.text += "_";
         }
+        if (!text.text.StartsWith(">"))
+        {
+            text.text = ">" + text.text;
+        }
     }
 }

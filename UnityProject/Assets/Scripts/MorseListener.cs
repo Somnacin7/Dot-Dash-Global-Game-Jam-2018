@@ -16,6 +16,7 @@ public class MorseListener : MonoBehaviour
 
     private float beatLength;
 
+
     private bool buttonHeld = false;
     private bool morseStarted = false;
     private float duration = 0;
@@ -222,6 +223,11 @@ public class MorseListener : MonoBehaviour
         }
 
         return english.ToString();
+    }
+
+    public void ClearMorse()
+    {
+        morse = new StringBuilder();
     }
 
 }
