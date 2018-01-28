@@ -40,8 +40,6 @@ public class ShipController : MonoBehaviour {
         }
         if (!running && !isDead)
         {
-            
-
             if (left)
             {
                 StartSpline(Direction.LEFT);
@@ -57,7 +55,6 @@ public class ShipController : MonoBehaviour {
         }
         
     }
-
     // 0 = left, 1 = right, 2 = forward
     void StartSpline(Direction dir)
     {
@@ -120,9 +117,9 @@ public class ShipController : MonoBehaviour {
         morseListener.ClearMorse();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        var go = collision.gameObject;
+        var go = other.gameObject;
         if (go.tag == "wall")
         {
             morseListener.enabled = false;
