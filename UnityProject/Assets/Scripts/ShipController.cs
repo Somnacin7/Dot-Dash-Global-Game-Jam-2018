@@ -87,7 +87,11 @@ public class ShipController : MonoBehaviour {
     void ResetSpline()
     {
         running = false;
-        text.text = ">_";
+        if (!isDead)
+        {
+            text.text = ">_";
+
+        }
     }
 
     private void OnEnable()
