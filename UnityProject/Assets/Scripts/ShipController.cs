@@ -126,6 +126,12 @@ public class ShipController : MonoBehaviour {
             text.text = "ERR: CRASH";
             isDead = true;
         }
+        else if (go.tag == "finish")
+        {
+            morseListener.enabled = false;
+            text.text = "YOU WIN!";
+            isDead = true;
+        }
     }
 
     void ReloadScene()
