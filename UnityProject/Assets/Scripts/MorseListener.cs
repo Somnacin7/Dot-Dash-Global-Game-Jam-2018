@@ -28,7 +28,7 @@ public class MorseListener : MonoBehaviour
     {
         {".-","A"},
         {"-...","B"},
-        {"-.- .","C"},
+        {"-.-.","C"},
         {"-..","D"},
         {".","E"},
         {"..-.","F"},
