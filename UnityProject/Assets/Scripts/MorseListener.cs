@@ -52,15 +52,9 @@ public class MorseListener : MonoBehaviour
     };
     public const string DOT = ".";
     public const string DASH = "-";
-<<<<<<< HEAD
-    public const string MGAP = "&"; // gap between letters
-    public const string LGAP = "_"; // gap between words
-=======
-    public const string SGAP = " "; // gap between parts of a char
     public const string MGAP = "&"; // gap between letters
     public const string LGAP = "_"; // gap between words
 
->>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
     // Events
     public delegate void AddMorseLetter();
     /// <summary>
@@ -127,15 +121,7 @@ public class MorseListener : MonoBehaviour
                     OnAddMorseLetter();
                 }
             }
-<<<<<<< HEAD
-=======
-            else // space between parts of a letters
-            {
-                morse.Append(SGAP);
-            }
-            duration = 0;
->>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
-        }
+	}
 
         buttonHeld = button;
 
@@ -144,12 +130,15 @@ public class MorseListener : MonoBehaviour
         
     }
 
+    public string GetPlainMorse()
+    {
+        return morse.Replace("&", "   ").Replace("_", "       ").ToString();
+    }
+
     public string GetMorse()
     {
         return morse.ToString();
     }
-
-<<<<<<< HEAD
 
     public string MorseToEnglish(string morse)
     {
@@ -172,12 +161,7 @@ public class MorseListener : MonoBehaviour
 
         ret = english.ToString();
         return ret;
-
-=======
-    public string GetPlainMorse()
-    {
-        return morse.Replace("&", "   ").Replace("_", "       ").ToString();
->>>>>>> fed0daa94aa69ee19c2e43bc98308f2784aee0f3
     }
+
 }
 
